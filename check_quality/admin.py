@@ -29,5 +29,5 @@ class QualitiesAdmin(admin.ModelAdmin):
     search_fields = ('company__name',)
     date_hierarchy = 'created_at'
     fields = (
-    'company', 'ordered_quantity', 'delivered_quantity', "quality_description", "agreed_time", "delivered_time")
+    'company', 'ordered_quantity', "percent_products", 'delivered_quantity', "quality_description", "agreed_time", "delivered_time", "description_time", "average_percentage", "created_at")
     readonly_fields = ('created_at', "percent_products", "description_time", "average_percentage")
