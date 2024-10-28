@@ -47,7 +47,7 @@ class Qualities(models.Model):
     percent_products = models.FloatField(null=True, blank=True,
                                          verbose_name="Kelishilgan mahsulotlarning yetkazib berilganlik foizi")
     invalid_quantity = models.IntegerField(null=True, blank=True, verbose_name="Yaroqsiz mahsulotlar soni")
-    agreed_time = models.DateTimeField(null=True, blank=True, verbose_name="Yetkazib berish kelishilgan vaqt")
+    agreed_time = models.DateTimeField(null=True, blank=True, verbose_name="Kelishilgan vaqt")
     delivered_time = models.DateTimeField(null=True, blank=True, verbose_name="Yetkazib berilgan vaqt")
     percent_time = models.FloatField(null=True, blank=True, verbose_name="Kelishilgan vaqtda yetkazib berilish foizi")
     percentage_quality = models.FloatField(null=True, blank=True, verbose_name="Yetkazilgan Mahsulotlar sifati foizi")
