@@ -50,10 +50,36 @@ class Qualities(models.Model):
     agreed_time = models.DateTimeField(null=True, blank=True, verbose_name="Yetkazib berish kelishilgan vaqt")
     delivered_time = models.DateTimeField(null=True, blank=True, verbose_name="Yetkazib berilgan vaqt")
     percent_time = models.FloatField(null=True, blank=True, verbose_name="Kelishilgan vaqtda yetkazib berilish foizi")
-    percentage_quality = models.FloatField(null=True, blank=True, verbose_name="Mahsulotlar sifati foizi")
+    percentage_quality = models.FloatField(null=True, blank=True, verbose_name="Yetkazilgan Mahsulotlar sifati foizi")
     average_percentage = models.FloatField(null=True, blank=True, verbose_name="Umumiy sifat foizi")
     created_at = models.DateTimeField(default=datetime.datetime.now(), null=True, blank=True,
                                       verbose_name="Yaratilgan vaqti")
+
+    def save(self, *args, **kwargs):
+        # average_percentage ni hisoblash
+        if self.ordered_quantity and self.delivered_quantity:
+            self.percent_products = (self.delivered_quantity / self.ordered_quantity) * 100
+        else:
+            self.percent_products = 0
+
+        # percent_time uchun algorithm
+        """percent_time uchun kod yozing"""
+
+        # percentage_quality uchun algorithm
+        if self.delivered_quantity and self.invalid_quantity:
+            # Qo'shimcha mahsulotlar sifatini hisoblash uchun matematik ifoda
+            valid_quantity = self.delivered_quantity - self.invalid_quantity
+            if valid_quantity > 0:
+                self.percentage_quality = (valid_quantity / self.delivered_quantity) * 100
+            else:
+                self.percentage_quality = 0
+        else:
+            self.percentage_quality = 0
+
+        # average_percentage ni hisoblash
+        """average_percentage ni hisoblash algorithmini yozing"""
+
+        super(Qualities, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Quality'
