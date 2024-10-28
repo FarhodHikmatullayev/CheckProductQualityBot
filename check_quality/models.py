@@ -42,15 +42,16 @@ class Companies(models.Model):
 
 class Qualities(models.Model):
     company = models.ForeignKey(Companies, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Kompaniya")
-    ordered_quantity = models.IntegerField(null=True, blank=True, verbose_name="Zakaz qilingan mahsulotlar soni")
-    delivered_quantity = models.IntegerField(null=True, blank=True, verbose_name="Keltirilgan mahsulotlar soni")
+    ordered_quantity = models.IntegerField(null=True, blank=True, verbose_name="Zakaz qilingan assortimentlar soni")
+    delivered_quantity = models.IntegerField(null=True, blank=True, verbose_name="Keltirilgan assortimentlar soni")
     percent_products = models.FloatField(null=True, blank=True,
                                          verbose_name="Kelishilgan mahsulotlarning yetkazib berilganlik foizi")
-    invalid_quantity = models.IntegerField(null=True, blank=True, verbose_name="Yaroqsiz mahsulotlar soni")
+    quality_description = models.CharField(max_length=500, null=True, blank=True,
+                                           verbose_name="Mahsulotlar sifati haqida izoh")
     agreed_time = models.DateTimeField(null=True, blank=True, verbose_name="Kelishilgan vaqt")
     delivered_time = models.DateTimeField(null=True, blank=True, verbose_name="Yetkazib berilgan vaqt")
-    percent_time = models.FloatField(null=True, blank=True, verbose_name="Kelishilgan vaqtda yetkazib berilish foizi")
-    percentage_quality = models.FloatField(null=True, blank=True, verbose_name="Yetkazilgan Mahsulotlar sifati foizi")
+    description_time = models.CharField(max_length=500, null=True, blank=True,
+                                        verbose_name="Keltirilgan vaqt haqida izoh")
     average_percentage = models.FloatField(null=True, blank=True, verbose_name="Umumiy sifat foizi")
     created_at = models.DateTimeField(default=datetime.datetime.now(), null=True, blank=True,
                                       verbose_name="Yaratilgan vaqti")
@@ -59,25 +60,17 @@ class Qualities(models.Model):
         # average_percentage ni hisoblash
         if self.ordered_quantity and self.delivered_quantity:
             self.percent_products = (self.delivered_quantity / self.ordered_quantity) * 100
+            self.average_percentage = (self.delivered_quantity / self.ordered_quantity) * 100
         else:
             self.percent_products = 0
+            self.average_percentage = 0
 
         # percent_time uchun algorithm
-        """percent_time uchun kod yozing"""
-
-        # percentage_quality uchun algorithm
-        if self.delivered_quantity and self.invalid_quantity:
-            # Qo'shimcha mahsulotlar sifatini hisoblash uchun matematik ifoda
-            valid_quantity = self.delivered_quantity - self.invalid_quantity
-            if valid_quantity > 0:
-                self.percentage_quality = (valid_quantity / self.delivered_quantity) * 100
+        if self.delivered_time and self.agreed_time:
+            if self.delivered_time > self.agreed_time:
+                self.description_time = "Vaqtida yetib kelmadi"
             else:
-                self.percentage_quality = 0
-        else:
-            self.percentage_quality = 0
-
-        # average_percentage ni hisoblash
-        """average_percentage ni hisoblash algorithmini yozing"""
+                self.description_time = "Vaqtida yetib keldi"
 
         super(Qualities, self).save(*args, **kwargs)
 
