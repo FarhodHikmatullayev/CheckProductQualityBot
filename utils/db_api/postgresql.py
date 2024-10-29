@@ -93,3 +93,23 @@ class Database:
     async def delete_user(self, user_id):
         sql = "DELETE FROM users WHERE id = $1 RETURNING *"
         return await self.execute(sql, user_id, fetchrow=True)
+
+    # for companies
+    async def select_all_companies(self):
+        sql = "SELECT * FROM company"
+        return await self.execute(sql, fetch=True)
+
+    async def select_companies(self, **kwargs):
+        sql = "SELECT * FROM company WHERE "
+        sql, parameters = self.format_args(sql, parameters=kwargs)
+        return await self.execute(sql, *parameters, fetch=True)
+
+    # for qualities
+    async def select_all_qualities(self):
+        sql = "SELECT * FROM quality"
+        return await self.execute(sql, fetch=True)
+
+    async def select_qualities(self, **kwargs):
+        sql = "SELECT * FROM quality WHERE "
+        sql, parameters = self.format_args(sql, parameters=kwargs)
+        return await self.execute(sql, *parameters, fetch=True)
