@@ -113,3 +113,13 @@ class Database:
         sql = "SELECT * FROM quality WHERE "
         sql, parameters = self.format_args(sql, parameters=kwargs)
         return await self.execute(sql, *parameters, fetch=True)
+
+    async def select_qualities_by_company_id(self, company_id):
+        today = datetime.now()
+        days_ago = today - timedelta(days=30)
+        sql = """
+                SELECT * FROM quality 
+                WHERE company_id = $1 
+                  AND created_at >= $2
+                """
+        return await self.execute(sql, company_id, days_ago, fetch=True)

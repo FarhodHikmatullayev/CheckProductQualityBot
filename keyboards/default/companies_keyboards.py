@@ -10,6 +10,8 @@ async def all_companies_default_keyboard():
     markup.resize_keyboard = True
     markup.row_width = 2
 
+    markup.insert(KeyboardButton(text="🔙 Bosh Menyu"))
+
     for company in companies:
         text_button = company['name']
         markup.insert(KeyboardButton(text_button))

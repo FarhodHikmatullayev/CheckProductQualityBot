@@ -59,8 +59,8 @@ class Qualities(models.Model):
     def save(self, *args, **kwargs):
         # average_percentage ni hisoblash
         if self.ordered_quantity and self.delivered_quantity:
-            self.percent_products = (self.delivered_quantity / self.ordered_quantity) * 100
-            self.average_percentage = (self.delivered_quantity / self.ordered_quantity) * 100
+            self.percent_products = round((self.delivered_quantity / self.ordered_quantity) * 100, 1)
+            self.average_percentage = round((self.delivered_quantity / self.ordered_quantity) * 100, 1)
         else:
             self.percent_products = 0
             self.average_percentage = 0
