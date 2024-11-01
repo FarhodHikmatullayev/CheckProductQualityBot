@@ -80,4 +80,4 @@ class Qualities(models.Model):
         db_table = 'quality'
 
     def __str__(self):
-        return f"{self.company.name}"
+        return self.company
