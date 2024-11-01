@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
@@ -56,8 +58,8 @@ async def download_thirty_day_qualities(company_id):
         ordered_quantity = quality['ordered_quantity']
         delivered_quantity = quality['delivered_quantity']
         percent_products = quality['percent_products']
-        agreed_time = quality['agreed_time']
-        delivered_time = quality['delivered_time']
+        agreed_time = quality['agreed_time'] + timedelta(hours=5)
+        delivered_time = quality['delivered_time'] + timedelta(hours=5)
         description_time = quality['description_time']
         quality_description = quality['quality_description']
         average_percentage = quality['average_percentage']
@@ -67,8 +69,10 @@ async def download_thirty_day_qualities(company_id):
         worksheet.cell(row=tr + 1, column=3, value=ordered_quantity).alignment = Alignment(horizontal='center')
         worksheet.cell(row=tr + 1, column=4, value=delivered_quantity).alignment = Alignment(horizontal='center')
         worksheet.cell(row=tr + 1, column=5, value=f"{percent_products} %").alignment = Alignment(horizontal='center')
-        worksheet.cell(row=tr + 1, column=6, value=agreed_time.strftime("%d.%m.%Y  %H:%M")).alignment = Alignment(horizontal='center')
-        worksheet.cell(row=tr + 1, column=7, value=delivered_time.strftime("%d.%m.%Y  %H:%M")).alignment = Alignment(horizontal='center')
+        worksheet.cell(row=tr + 1, column=6, value=agreed_time.strftime("%d.%m.%Y  %H:%M")).alignment = Alignment(
+            horizontal='center')
+        worksheet.cell(row=tr + 1, column=7, value=delivered_time.strftime("%d.%m.%Y  %H:%M")).alignment = Alignment(
+            horizontal='center')
         worksheet.cell(row=tr + 1, column=8, value=description_time).alignment = Alignment(horizontal='center')
         worksheet.cell(row=tr + 1, column=9, value=quality_description).alignment = Alignment(horizontal='center')
         worksheet.cell(row=tr + 1, column=10, value=f"{average_percentage} %").alignment = Alignment(
