@@ -41,7 +41,7 @@ class Companies(models.Model):
 
 
 class Qualities(models.Model):
-    company = models.ForeignKey(Companies, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Kompaniya")
+    company = models.ForeignKey(Companies, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Kompaniya")
     ordered_quantity = models.IntegerField(null=True, blank=True, verbose_name="Zakaz qilingan assortimentlar soni")
     delivered_quantity = models.IntegerField(null=True, blank=True, verbose_name="Keltirilgan assortimentlar soni")
     percent_products = models.FloatField(null=True, blank=True,
@@ -80,4 +80,4 @@ class Qualities(models.Model):
         db_table = 'quality'
 
     def __str__(self):
-        return self.company
+        return self.company.name
